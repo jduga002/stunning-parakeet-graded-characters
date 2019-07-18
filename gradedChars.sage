@@ -23,7 +23,7 @@ def sesAlg(xiPlus):
    
    l = xi.length()
    
-   poly = -q^(l-1)
+   poly = -q^((l-1)*(xi[l-1]))
    
    xi_last = xi[l-1]
 
