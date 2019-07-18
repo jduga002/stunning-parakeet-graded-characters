@@ -19,7 +19,7 @@ def sesAlg(xiPlus):
       xi = xiPlus.add_cell(l-1)
    
    first_corner = xi.corners()[0]
-   xi = xi.remove_cell(first_corner[0],first_corner[1])
+   xi = xi.remove_cell(first_corner[0])
    
    l = xi.length()
    
