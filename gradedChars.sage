@@ -13,7 +13,7 @@ def gradedChars(n,k,r=0):
 def sesAlg(xiPlus):
    l = xiPlus.length()
    
-   if xiPlus[l-1] >= xiPlus[0]-1:
+   if xiPlus[-1] >= xiPlus[0]-1:
       xi = xiPlus.add_cell(l)
    else:
       xi = xiPlus.add_cell(l-1)
@@ -22,10 +22,10 @@ def sesAlg(xiPlus):
    xi = xi.remove_cell(first_corner[0])
    
    l = xi.length()
+   xi_last = xi[-1]
    
-   poly = -q^((l-1)*(xi[l-1]))
+   poly = -q^((l-1)*(xi_last))
    
-   xi_last = xi[l-1]
 
    xiMinus = Partition(xi[:l-1])
    for i in range(xi_last):
