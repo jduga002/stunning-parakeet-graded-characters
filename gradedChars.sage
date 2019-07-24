@@ -1,8 +1,9 @@
 Partitions.options.display="exp_high"
+Partitions.options.latex="exp_high"
 
 R.<q> = ZZ['q']
 
-def gradedChars(n,k,s=0,r=0,showGraph=True,showGradedChar=True):
+def gradedChars(n,k,s=0,r=0,showGraph=False,showGradedChar=False):
    root = makePartition(n,k,s=s,r=r)
 
    charGraph = makeCharGraph(root)
@@ -101,3 +102,21 @@ def displayGradedChar(gradedCharacter):
             output += ')'
       output += '[' + repr(partition) + ']'
    print(output)
+
+def latexGradedChar(gradedCharacter):
+   root = gradedCharacter[0]
+   gradedCharDict = gradedCharacter[1]
+   output = '[' + latex(root) + '] = '
+   k = 0
+   for partition, poly in gradedCharDict.items():
+      if k > 0:
+         output += ' + '
+      k += 1
+      if poly != 1:
+         if not poly.is_term():
+            output += '('
+         output += latex(poly)
+         if not poly.is_term():
+            output += ')'
+      output += '[' + latex(partition) + ']'
+   return output
