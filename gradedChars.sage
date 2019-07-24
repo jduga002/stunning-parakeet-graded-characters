@@ -2,7 +2,7 @@ Partitions.options.display="exp_high"
 
 R.<q> = ZZ['q']
 
-def gradedChars(n,k,s=0,r=0,showGraph=True):
+def gradedChars(n,k,s=0,r=0,showGraph=True,showGradedChar=True):
    root = makePartition(n,k,s=s,r=r)
 
    charGraph = makeCharGraph(root)
@@ -10,7 +10,12 @@ def gradedChars(n,k,s=0,r=0,showGraph=True):
    if showGraph:
       charGraph.show(edge_labels=True)
 
-   return charGraph
+   gradedCharacter = calcGradedChar(charGraph,root)
+
+   if showGradedChar:
+      displayGradedChar(gradedCharacter)
+
+   return charGraph, gradedCharacter
 
 def sesAlg(xiPlus):
    l = xiPlus.length()
@@ -65,3 +70,34 @@ def makeCharGraph(root):
          G.add_vertices([xi, xiMinus])
          G.add_edges([(p,xi,1), (p,xiMinus,poly)])
    return G
+
+def calcGradedChar(charGraph,root):
+   gradedCharDict = { }
+   for node in charGraph.sinks():
+      coeff_poly = 0
+      for path in charGraph.all_paths(root, node, report_edges=True, labels=True):
+         poly = 1
+         for edge in path:
+            poly *= edge[2]
+         coeff_poly += poly
+      if coeff_poly != 0:
+         gradedCharDict[node] = coeff_poly
+   return root, gradedCharDict
+
+def displayGradedChar(gradedCharacter):
+   root = gradedCharacter[0]
+   gradedCharDict = gradedCharacter[1]
+   output = '[' + repr(root) + '] = '
+   k = 0
+   for partition, poly in gradedCharDict.items():
+      if k > 0:
+         output += ' + '
+      k += 1
+      if poly != 1:
+         if not poly.is_term():
+            output += '('
+         output += str(poly)
+         if not poly.is_term():
+            output += ')'
+      output += '[' + repr(partition) + ']'
+   print(output)
