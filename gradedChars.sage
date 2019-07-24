@@ -2,12 +2,13 @@ Partitions.options.display="exp_high"
 
 R.<q> = ZZ['q']
 
-def gradedChars(n,k,s=0,r=0):
+def gradedChars(n,k,s=0,r=0,showGraph=True):
    root = makePartition(n,k,s=s,r=r)
 
    charGraph = makeCharGraph(root)
 
-   charGraph.show(edge_labels=True)
+   if showGraph:
+      charGraph.show(edge_labels=True)
 
    return charGraph
 
@@ -46,21 +47,21 @@ def makePartition(n,k,s=0,r=0):
 
 def makeCharGraph(root):
    n = root[0]
-   G = DiGraph([[root],[]])
+   G = DiGraph([[root],[]],weighted=True)
    graph_iter = { root }
    
 #  while graph_iter is not empty
    while graph_iter:
       p = graph_iter.pop()
       if (not p.is_empty() and p[0] == n):
-         tuple = sesAlg(p)
+         xi, xiMinus, poly = sesAlg(p)
 
 #        TODO:
 #        for efficiency's sake, should only add new partitions to
 #        iterator if haven't already done them (since can get same
 #        partition more than once through process)
-         graph_iter.update(tuple[:2])
+         graph_iter.update([xi, xiMinus])
 
-         G.add_vertices(tuple[:2])
-         G.add_edges([(p,tuple[0],1), (p,tuple[1],tuple[2])])
+         G.add_vertices([xi, xiMinus])
+         G.add_edges([(p,xi,1), (p,xiMinus,poly)])
    return G
