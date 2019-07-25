@@ -33,7 +33,7 @@ def sesAlg(xiPlus):
    xi = xi.remove_cell(first_corner[0])
     
    l = xi.length()  # l is now the number of parts of xi
-   xi_last = xi[-1] # xi_last is the last number of xi
+   xi_last = xi[-1] # xi_last is the last part of xi
     
    poly = -q^((l-1)*(xi_last)) # get grade shift
 
@@ -78,8 +78,8 @@ def makeCharGraph(root):
    return G
 
 def calcGradedChar(charGraph,root):
-   gradedCharDict = { }
-   for node in charGraph.sinks():
+   gradedCharDict = [ ]
+   for node in sorted(charGraph.sinks(), reverse=True):
       coeff_poly = 0
       for path in charGraph.all_paths(root, node, report_edges=True, labels=True):
          poly = 1
@@ -87,7 +87,7 @@ def calcGradedChar(charGraph,root):
             poly *= edge[2]
          coeff_poly += poly
       if coeff_poly != 0:
-         gradedCharDict[node] = coeff_poly
+         gradedCharDict.append((node, coeff_poly))
    return root, gradedCharDict
 
 def displayGradedChar(gradedCharacter):
@@ -95,7 +95,7 @@ def displayGradedChar(gradedCharacter):
    gradedCharDict = gradedCharacter[1]
    output = '[' + repr(root) + '] = '
    k = 0
-   for partition, poly in gradedCharDict.items():
+   for partition, poly in gradedCharDict:
       if k > 0:
          output += ' + '
       k += 1
@@ -113,7 +113,7 @@ def latexGradedChar(gradedCharacter):
    gradedCharDict = gradedCharacter[1]
    output = '[' + latex(root) + '] = '
    k = 0
-   for partition, poly in gradedCharDict.items():
+   for partition, poly in gradedCharDict:
       if k > 0:
          output += ' + '
       k += 1
