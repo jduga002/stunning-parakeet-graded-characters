@@ -18,23 +18,28 @@ def gradedChars(n,k,s=0,r=0,showGraph=False,showGradedChar=False):
 
    return charGraph, gradedCharacter
 
+# xiPlus is a partition of the form n^k,(n-1)^s,r for s >= 0, 0 <= r < n-1
 def sesAlg(xiPlus):
-   l = xiPlus.length()
+   l = xiPlus.length()  #l is number of parts of partition xi
    
-   if xiPlus[-1] >= xiPlus[0]-1:
+   # We start constructing xi:
+   if xiPlus[-1] >= xiPlus[0]-1: # if r = 0, we add a new row with one cell
       xi = xiPlus.add_cell(l)
-   else:
-      xi = xiPlus.add_cell(l-1)
-   
+   else:                         # otherwise, add a cell to the last row (so r becomes r+1)
+      xi = xiPlus.add_cell(l-1) 
+
+   # Then we remove a cell from one of the rows of length n to complete the construction of xi
    first_corner = xi.corners()[0]
    xi = xi.remove_cell(first_corner[0])
-   
-   l = xi.length()
-   xi_last = xi[-1]
-   
-   poly = -q^((l-1)*(xi_last))
+    
+   l = xi.length()  # l is now the number of parts of xi
+   xi_last = xi[-1] # xi_last is the last number of xi
+    
+   poly = -q^((l-1)*(xi_last)) # get grade shift
 
+   # To get xiMinus, remove the last row of partition xi
    xiMinus = Partition(xi[:l-1])
+   # Then remove same amount of cells from second to last row of partition
    for i in range(xi_last):
       xiMinus = xiMinus.remove_cell(l-2)
    
@@ -42,7 +47,7 @@ def sesAlg(xiPlus):
 
    return (xi,xiMinus,poly)
 
-# Makes a partition of the form n^k (n-1)^s r
+# Makes a partition of the form n^k,(n-1)^s,r for s >= 0, 0 <= r < n-1
 def makePartition(n,k,s=0,r=0):
    exponents = [0] * n;
    exponents[n-1] = k;
