@@ -5,6 +5,7 @@ R.<q> = ZZ['q']
 
 # calculates the graded character of a Demazure module D(m,Lambda) in terms
 # of level l Demazure modules (default is l=n-1)
+# NOTE: this code breaks if Lambda < m
 def gradedCharOfDemazure(m,Lambda,l=1,showGraph=False,showGradedChar=False):
    root = DemazureToCV(m,Lambda)
    return gradedCharsFromPartition(root,l,showGraph,showGradedChar)
