@@ -3,10 +3,28 @@ Partitions.options.latex="exp_high"
 
 R.<q> = ZZ['q']
 
-def gradedChars(n,k,s=0,r=0,showGraph=False,showGradedChar=False):
-   root = makePartition(n,k,s=s,r=r)
+# calculates the graded character of a Demazure module D(m,Lambda) in terms
+# of level l Demazure modules (default is l=n-1)
+def gradedCharOfDemazure(m,Lambda,l=1,showGraph=False,showGradedChar=False):
+   root = DemazureToCV(m,Lambda)
+   return gradedCharsFromPartition(root,l,showGraph,showGradedChar)
 
-   charGraph = makeCharGraph(root)
+# calculates the graded character of a CV-module associated to the partition
+# n^k,(n-1)^s,r for s >= 0, 0 <= r < n-1, in terms of level l Demazure modules
+# (default is l = n-1)
+def gradedChars(n,k,s=0,r=0,l=-1,showGraph=False,showGradedChar=False):
+   root = makePartition(n,k,s=s,r=r)
+   return gradedCharsFromPartition(root,l,showGraph,showGradedChar)
+
+# calculates the graded character of a CV-module associated to the partition root,
+# which must be of the form n^k,(n-1)^s,r for s >= 0, 0 <= r < n-1,
+# in terms of level l Demazure modules (default is l=n-1)
+def gradedCharsFromPartition(root,l=-1,showGraph=False,showGradedChar=False):
+
+   if l < 0:
+      l = n-1
+
+   charGraph = makeCharGraph(root,l)
 
    if showGraph:
       charGraph.show(edge_labels=True)
@@ -56,7 +74,7 @@ def makePartition(n,k,s=0,r=0):
       exponents[r-1] = 1
    return Partition(exp=exponents);
 
-def makeCharGraph(root):
+def makeCharGraph(root,l):
    n = root[0]
    G = DiGraph([[root],[]],weighted=True)
    graph_iter = { root }
@@ -64,7 +82,7 @@ def makeCharGraph(root):
 #  while graph_iter is not empty
    while graph_iter:
       p = graph_iter.pop()
-      if (not p.is_empty() and p[0] == n):
+      if (not p.is_empty() and p[0] > l):
          xi, xiMinus, poly = sesAlg(p)
 
 #        TODO:
@@ -125,3 +143,10 @@ def latexGradedChar(gradedCharacter):
             output += ')'
       output += '[' + latex(partition) + ']'
    return output
+
+# Gives the partition associated to a level m Demazure module of highest
+# weight Lambda when thinking about it as a CV-module
+def DemazureToCV(m,Lambda):
+   quotient = int(Lambda) / int(m)
+   remainder = Lambda % m
+   return makePartition(n=m,k=quotient,r=remainder) if remainder < m-1 else makePartition(n=m,k=quotient,s=1)
