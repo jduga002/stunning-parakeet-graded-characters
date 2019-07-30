@@ -23,7 +23,7 @@ def gradedChars(n,k,s=0,r=0,l=-1,showGraph=False,showGradedChar=False):
 def gradedCharsFromPartition(root,l=-1,showGraph=False,showGradedChar=False):
 
    if l < 0:
-      l = n-1
+      l = root[0]-1
 
    charGraph = makeCharGraph(root,l)
 
