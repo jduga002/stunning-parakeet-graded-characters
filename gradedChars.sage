@@ -86,11 +86,10 @@ def makeCharGraph(root,l):
       if (not p.is_empty() and p[0] > l):
          xi, xiMinus, poly = sesAlg(p)
 
-#        TODO:
-#        for efficiency's sake, should only add new partitions to
-#        iterator if haven't already done them (since can get same
-#        partition more than once through process)
-         graph_iter.update([xi, xiMinus])
+         if xi not in G.vertices():
+            graph_iter.add(xi)
+         if xiMinus not in G.vertices():
+            graph_iter.add(xiMinus)
 
          G.add_vertices([xi, xiMinus])
          G.add_edges([(p,xi,1), (p,xiMinus,poly)])
@@ -139,7 +138,7 @@ def latexGradedChar(gradedCharacter):
       if poly != 1:
          if not poly.is_term():
             output += '('
-         output += latex(poly)
+         output += latex(poly.factor())
          if not poly.is_term():
             output += ')'
       output += '[' + latex(partition) + ']'
