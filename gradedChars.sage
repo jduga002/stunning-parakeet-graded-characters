@@ -39,28 +39,28 @@ def gradedCharsFromPartition(root,l=-1,showGraph=False,showGradedChar=False):
 
 # xiPlus is a partition of the form n^k,(n-1)^s,r for s >= 0, 0 <= r < n-1
 def sesAlg(xiPlus):
-   l = xiPlus.length()  #l is number of parts of partition xi
+   length = xiPlus.length()  #length is number of parts of partition xi
    
    # We start constructing xi:
    if xiPlus[-1] >= xiPlus[0]-1: # if r = 0, we add a new row with one cell
-      xi = xiPlus.add_cell(l)
+      xi = xiPlus.add_cell(length)
    else:                         # otherwise, add a cell to the last row (so r becomes r+1)
-      xi = xiPlus.add_cell(l-1) 
+      xi = xiPlus.add_cell(length-1) 
 
    # Then we remove a cell from one of the rows of length n to complete the construction of xi
    first_corner = xi.corners()[0]
    xi = xi.remove_cell(first_corner[0])
     
-   l = xi.length()  # l is now the number of parts of xi
+   length = xi.length()  # length is now the number of parts of xi
    xi_last = xi[-1] # xi_last is the last part of xi
     
-   poly = -q^((l-1)*(xi_last)) # get grade shift
+   poly = -q^((length-1)*(xi_last)) # get grade shift
 
    # To get xiMinus, remove the last row of partition xi
-   xiMinus = Partition(xi[:l-1])
+   xiMinus = Partition(xi[:length-1])
    # Then remove same amount of cells from second to last row of partition
    for i in range(xi_last):
-      xiMinus = xiMinus.remove_cell(l-2)
+      xiMinus = xiMinus.remove_cell(length-2)
    
 #   print(str(xiPlus)+" = " + str(xi) + str(poly) + str(xiMinus))
 
