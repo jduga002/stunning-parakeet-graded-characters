@@ -3,6 +3,9 @@ Partitions.options.latex="exp_high"
 
 R.<q> = ZZ['q']
 
+#TODO: Feature fix?: for partition 2,1 if get the 1 by letting r=1, solves for 
+# partition 2, but if get 1 by letting s=1, then gets partition 2,1 as desired
+
 # calculates the graded character of a Demazure module D(m,Lambda) in terms
 # of level l Demazure modules (default is l=n-1)
 # NOTE: this code breaks if Lambda < m
@@ -143,7 +146,7 @@ def latexGradedChar(gradedCharacter):
       if poly != 1:
          if not poly.is_term():
             output += '('
-         output += latex(poly.factor())
+         output += latex(poly)
          if not poly.is_term():
             output += ')'
       output += '[' + latex(partition) + ']'
