@@ -83,15 +83,15 @@ def makeCharGraph(root,l):
    G = DiGraph([[root],[]],weighted=True)
    graph_iter = { root }
 
-   exp = root.to_exp();
-   exp[-1] -= 2;
-   n_to_k_minus_two = Partition(exp=exp);
+#  exp = root.to_exp();
+#  exp[-1] -= 2;
+#  n_to_k_minus_two = Partition(exp=exp);
    
 #  while graph_iter is not empty
    while graph_iter:
       p = graph_iter.pop()
-#     if (not p.is_empty() and p[0] > l):
-      if (not p.is_empty() and p != n_to_k_minus_two and p[0] > l):
+      if (not p.is_empty() and p[0] > l):
+#     if (not p.is_empty() and p != n_to_k_minus_two and p[0] > l):
          xi, xiMinus, poly = sesAlg(p)
 
          if xi not in G.vertices():
