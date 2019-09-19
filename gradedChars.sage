@@ -78,6 +78,18 @@ def makePartition(n,k,s=0,r=0):
       exponents[r-1] = 1
    return Partition(exp=exponents);
 
+# If partition corresponds to D(l,m), this returns the partition 
+# corresponding to D(l,m+1)
+def nextPartition(partition):
+   if partition == Partition([]):
+      return Partition([1])
+   elif partition[-1] < partition[0]:
+      #todo: right algorithm
+      cell = partition.addable_cells()[-2]
+      return partition.add_cell(cell[0])
+   else:
+      return partition.add_cell(partition.length()) 
+
 def makeCharGraph(root,l):
    n = root[0]
    G = DiGraph([[root],[]],weighted=True)
